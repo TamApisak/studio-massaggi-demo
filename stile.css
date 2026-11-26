@@ -1,0 +1,205 @@
+/* Colours and fonts — change them here and the whole page follows. */
+:root {
+  --ivory: #FAF6EC;
+  --ivory-deep: #F1EBDC;
+  --ink: #2B2A26;
+  --ink-soft: #5C5A52;
+  --sage: #7D9079;
+  --sage-deep: #55694F;
+  --sage-tint: #E3E8DC;
+  --line: #DDD6C4;
+  --todo-bg: #FFE9A6;
+  --todo-line: #B98A00;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --width: 1040px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+body {
+  margin: 0;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.2rem, 7vw, 3.6rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.7rem, 5vw, 2.3rem); margin-bottom: 0.5rem; }
+h3 { font-size: 1.25rem; }
+p { margin: 0 0 1rem; }
+a { color: var(--sage-deep); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--sage); outline-offset: 3px; }
+
+/* ---- Placeholders (development only) ---------------------------------- */
+.todo {
+  background: var(--todo-bg);
+  color: #4A3700;
+  border: 1px dashed var(--todo-line);
+  border-radius: 4px;
+  padding: 0 0.3em;
+  font-family: var(--sans);
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.btn.is-todo { outline: 2px dashed var(--todo-line); outline-offset: 3px; }
+.draft-banner {
+  margin: 0;
+  padding: 0.6rem 16px;
+  background: var(--todo-bg);
+  color: #4A3700;
+  border-bottom: 1px dashed var(--todo-line);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ---- Header ----------------------------------------------------------- */
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.7rem max(16px, calc((100vw - var(--width)) / 2));
+  background: color-mix(in srgb, var(--ivory) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.brand {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--ink); text-decoration: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
+.site-header nav { display: flex; gap: 1.25rem; flex-shrink: 0; }
+.site-header nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.95rem; padding: 0.4rem 0; }
+.site-header nav a:hover { color: var(--sage-deep); }
+
+/* ---- Sections --------------------------------------------------------- */
+main > section {
+  max-width: var(--width);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 8vw, 5rem) 16px;
+}
+main > section + section { border-top: 1px solid var(--line); }
+.section-intro { color: var(--ink-soft); max-width: 38rem; margin-bottom: 1.75rem; }
+
+/* ---- Buttons ---------------------------------------------------------- */
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 50px; padding: 0.7rem 1.4rem;
+  border-radius: 999px; border: 1.5px solid var(--sage-deep);
+  font: 600 1rem/1.2 var(--sans); text-decoration: none; text-align: center;
+  transition: background-color .15s, color .15s;
+}
+.btn-primary { background: var(--sage-deep); color: #fff; }
+.btn-primary:hover { background: #46583F; }
+.btn-secondary { background: transparent; color: var(--sage-deep); }
+.btn-secondary:hover { background: var(--sage-tint); }
+
+/* ---- 1. Welcome ------------------------------------------------------- */
+.hero { display: grid; gap: 2rem; align-items: center; }
+.eyebrow { color: var(--sage-deep); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.lead { font-size: 1.15rem; color: var(--ink-soft); margin: 1rem 0 1.75rem; max-width: 30rem; }
+
+.photo { border-radius: 18px; overflow: hidden; background: var(--sage-tint); }
+.photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo-hero { aspect-ratio: 4 / 3; }
+.photo-about { aspect-ratio: 4 / 3; }
+.photo.is-todo {
+  display: grid; place-content: center; gap: 0.4rem; padding: 1.5rem; text-align: center;
+  border: 2px dashed var(--todo-line);
+  background: repeating-linear-gradient(135deg, var(--sage-tint) 0 14px, #EAEEE4 14px 28px);
+  color: #4A3700; font-size: 0.9rem;
+}
+.photo.is-todo strong { font-size: 0.75rem; letter-spacing: 0.1em; }
+
+/* ---- 2. Treatments ---------------------------------------------------- */
+.treatments { display: grid; gap: 1rem; }
+.treatment {
+  background: #FFFDF7; border: 1px solid var(--line); border-radius: 16px;
+  padding: 1.25rem 1.25rem 0.75rem;
+}
+.treatment p { color: var(--ink-soft); margin: 0.4rem 0 0.75rem; }
+.options { list-style: none; margin: 0; padding: 0; }
+.options li {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  padding: 0.65rem 0; border-top: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.options .minutes { color: var(--ink); }
+.options .dots { flex: 1; border-bottom: 1px dotted var(--sage); transform: translateY(-4px); }
+.options .price { font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+
+/* ---- 3. About --------------------------------------------------------- */
+.about { display: grid; gap: 2rem; align-items: center; }
+#about-text p { max-width: 34rem; }
+
+/* ---- 4. Visit --------------------------------------------------------- */
+.visit { display: grid; gap: 2rem; margin-top: 1.5rem; }
+.visit h3 { margin: 0 0 0.6rem; }
+.visit-info h3:not(:first-child) { margin-top: 2rem; }
+address { font-style: normal; margin-bottom: 1rem; }
+.phone-line a { font-weight: 600; white-space: nowrap; }
+.social { margin-top: 1.25rem; display: flex; gap: 1.25rem; }
+
+.hours { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.hours th, .hours td { padding: 0.6rem 0; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; }
+.hours td { text-align: right; }
+.hours tr.is-today th, .hours tr.is-today td { font-weight: 700; }
+.hours tr.is-today th::after { content: " · oggi"; color: var(--sage-deep); font-weight: 600; font-size: 0.85em; }
+.hours .closed { color: var(--ink-soft); }
+
+.map { border-radius: 16px; overflow: hidden; min-height: 300px; background: var(--sage-tint); display: grid; }
+.map iframe { width: 100%; height: 100%; min-height: 300px; border: 0; display: block; }
+.map-prompt { display: grid; place-content: center; justify-items: center; gap: 0.75rem; padding: 1.5rem; text-align: center; }
+.map-prompt small { color: var(--ink-soft); max-width: 22rem; }
+.map-prompt button { cursor: pointer; background: #FFFDF7; }
+.map.is-todo { border: 2px dashed var(--todo-line); color: #4A3700; font-size: 0.9rem; }
+
+/* ---- Footer & mobile bar ---------------------------------------------- */
+.site-footer { text-align: center; color: var(--ink-soft); font-size: 0.9rem; padding: 2rem 16px; border-top: 1px solid var(--line); }
+.site-footer p { margin: 0; }
+
+.mobile-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: grid; grid-template-columns: 1.4fr 1fr; gap: 0.6rem;
+  padding: 0.6rem 16px calc(0.6rem + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--ivory) 94%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+}
+.mobile-bar .btn-secondary { background: #FFFDF7; }
+body { padding-bottom: 84px; }
+
+.noscript { text-align: center; padding: 1rem 16px; }
+
+/* ---- Small phones ----------------------------------------------------- */
+@media (max-width: 520px) {
+  .site-header .brand { display: none; }
+  .site-header nav { width: 100%; justify-content: space-between; }
+  .hero .actions .btn { width: 100%; }
+}
+
+/* ---- Tablet and up ---------------------------------------------------- */
+@media (min-width: 760px) {
+  body { padding-bottom: 0; }
+  .mobile-bar { display: none; }
+  .hero { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .photo-hero { aspect-ratio: 4 / 5; }
+  .treatments { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; }
+  .about { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .visit { grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .map { grid-column: 1 / -1; min-height: 380px; }
+  .map iframe { min-height: 380px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn { transition: none; }
+}

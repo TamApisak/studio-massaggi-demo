@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio massaggi</title>
+  <meta name="description" content="Massaggi, prezzi, orari e contatti dello studio. Prenota su WhatsApp.">
+  <meta name="theme-color" content="#FAF6EC">
+  <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+
+  <!-- Shown only while dati.js still contains [[placeholders]] -->
+  <p class="draft-banner" id="draft-banner" hidden></p>
+
+  <header class="site-header">
+    <a class="brand" href="#benvenuto" data-text="name"></a>
+    <nav aria-label="Navigazione principale">
+      <a href="#massaggi">Massaggi</a>
+      <a href="#chi-siamo">Chi siamo</a>
+      <a href="#dove-siamo">Dove siamo</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- 1. BENVENUTO -->
+    <section class="hero" id="benvenuto">
+      <div class="hero-text">
+        <p class="eyebrow">Studio massaggi a <span data-text="city"></span></p>
+        <h1 data-text="name"></h1>
+        <p class="lead" data-text="intro"></p>
+        <div class="actions">
+          <a class="btn btn-primary js-whatsapp" href="#dove-siamo" target="_blank" rel="noopener">Prenota su WhatsApp</a>
+          <a class="btn btn-secondary" href="#massaggi">Scopri i massaggi</a>
+        </div>
+      </div>
+      <div class="photo photo-hero" data-photo="hero" data-photo-hint="Foto accogliente dello studio"></div>
+    </section>
+
+    <!-- 2. MASSAGGI E PREZZI -->
+    <section id="massaggi">
+      <h2>Massaggi e prezzi</h2>
+      <p class="section-intro">Scegli il trattamento e la durata che fanno per te. Se hai dubbi, scrivici: ti aiutiamo volentieri a scegliere.</p>
+      <div class="treatments" id="treatments"></div>
+    </section>
+
+    <!-- 3. CHI SIAMO -->
+    <section class="about" id="chi-siamo">
+      <div>
+        <h2>Chi siamo</h2>
+        <div id="about-text"></div>
+      </div>
+      <div class="photo photo-about" data-photo="about" data-photo-hint="Seconda foto dello studio"></div>
+    </section>
+
+    <!-- 4. DOVE SIAMO E ORARI -->
+    <section id="dove-siamo">
+      <h2>Dove siamo e orari</h2>
+      <div class="visit">
+
+        <div class="visit-info">
+          <h3>Indirizzo</h3>
+          <address>
+            <span data-text="address.street"></span><br>
+            <span data-text="address.postcodeCity"></span>
+          </address>
+          <a class="btn btn-secondary js-maps" href="#dove-siamo" target="_blank" rel="noopener">Ottieni indicazioni</a>
+
+          <h3>Contatti</h3>
+          <p class="phone-line">Telefono: <a class="js-phone" href="#dove-siamo"></a></p>
+          <div class="actions">
+            <a class="btn btn-primary js-whatsapp" href="#dove-siamo" target="_blank" rel="noopener">Prenota su WhatsApp</a>
+            <a class="btn btn-secondary js-call" href="#dove-siamo">Chiama</a>
+          </div>
+          <p class="social" id="social" hidden></p>
+        </div>
+
+        <div class="visit-hours">
+          <h3>Orari di apertura</h3>
+          <table class="hours">
+            <tbody id="hours"></tbody>
+          </table>
+        </div>
+
+        <div class="map" id="map"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> <span data-text="name"></span></p>
+  </footer>
+
+  <!-- Always-visible contact bar on phones -->
+  <div class="mobile-bar">
+    <a class="btn btn-primary js-whatsapp" href="#dove-siamo" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn btn-secondary js-call" href="#dove-siamo">Chiama</a>
+  </div>
+
+  <noscript>
+    <p class="noscript">Per vedere massaggi, prezzi e orari attiva JavaScript nel browser.</p>
+  </noscript>
+
+  <script src="dati.js"></script>
+  <script src="sito.js"></script>
+</body>
+</html>
