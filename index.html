@@ -6,6 +6,15 @@
   <title>Studio massaggi</title>
   <meta name="description" content="Massaggi, prezzi, orari e contatti dello studio. Prenota su WhatsApp.">
   <meta name="theme-color" content="#FAF6EC">
+
+  <!-- Preview shown when the link is shared on WhatsApp, Facebook, etc.
+       These three lines are NOT filled from dati.js: update them by hand,
+       and use the full web address of the photo. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Studio Salvia · Massaggi a Torino">
+  <meta property="og:description" content="Trattamenti, prezzi, orari e contatti. Prenota su WhatsApp.">
+  <meta property="og:image" content="https://tamapisak.github.io/studio-massaggi-demo/foto/studio.jpg">
+
   <link rel="stylesheet" href="stile.css">
 </head>
 <body>
@@ -30,6 +39,7 @@
         <p class="eyebrow">Studio massaggi a <span data-text="city"></span></p>
         <h1 data-text="name"></h1>
         <p class="lead" data-text="intro"></p>
+        <p class="status" data-status hidden></p>
         <div class="actions">
           <a class="btn btn-primary js-whatsapp" href="#dove-siamo" target="_blank" rel="noopener">Prenota su WhatsApp</a>
           <a class="btn btn-secondary" href="#massaggi">Scopri i massaggi</a>
@@ -42,6 +52,10 @@
     <section id="massaggi">
       <h2>Massaggi e prezzi</h2>
       <p class="section-intro">Scegli il trattamento e la durata che fanno per te. Se hai dubbi, scrivici: ti aiutiamo volentieri a scegliere.</p>
+      <div class="needs" id="needs" hidden>
+        <p id="needs-label">Cosa cerchi oggi?</p>
+        <div class="chips" role="group" aria-labelledby="needs-label"></div>
+      </div>
       <div class="treatments" id="treatments"></div>
     </section>
 
@@ -78,6 +92,7 @@
 
         <div class="visit-hours">
           <h3>Orari di apertura</h3>
+          <p class="status" data-status hidden></p>
           <table class="hours">
             <tbody id="hours"></tbody>
           </table>

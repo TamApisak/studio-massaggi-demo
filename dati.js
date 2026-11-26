@@ -56,9 +56,19 @@ window.STUDIO = {
      symbol (60 or 59.5). If a massage has several durations, add one
      line per duration inside "options".
      Copy a whole { ... }, block to add a treatment; delete one to remove. */
+  /* "Cosa cerchi oggi?" buttons above the menu. Each treatment below lists
+     the ids it belongs to in "tags". Delete all of them to hide the buttons. */
+  needs: [
+    { id: "relax",    label: "Rilassarmi" },
+    { id: "tensioni", label: "Sciogliere le tensioni" },
+    { id: "breve",    label: "Ho poco tempo" },
+    { id: "coppia",   label: "In coppia" },
+  ],
+
   treatments: [
     {
       name: "Massaggio rilassante",
+      tags: ["relax", "breve"],
       description: "Movimenti lenti e avvolgenti su tutto il corpo, per staccare la spina e ritrovare la calma.",
       options: [
         { minutes: 30, price: 35 },
@@ -68,6 +78,7 @@ window.STUDIO = {
     },
     {
       name: "Massaggio thailandese tradizionale",
+      tags: ["tensioni"],
       description: "Pressioni e allungamenti dolci, senza olio e con abiti comodi, per sentirsi più leggeri e sciolti.",
       options: [
         { minutes: 60, price: 65 },
@@ -76,6 +87,7 @@ window.STUDIO = {
     },
     {
       name: "Massaggio con oli aromatici",
+      tags: ["relax"],
       description: "Olio caldo profumato e tocco delicato: un momento di puro benessere per corpo e mente.",
       options: [
         { minutes: 60, price: 70 },
@@ -83,6 +95,7 @@ window.STUDIO = {
     },
     {
       name: "Massaggio schiena, collo e spalle",
+      tags: ["tensioni", "breve"],
       description: "Un trattamento mirato sulle zone dove si accumula più tensione, ideale dopo una giornata alla scrivania.",
       options: [
         { minutes: 30, price: 38 },
@@ -91,6 +104,7 @@ window.STUDIO = {
     },
     {
       name: "Massaggio ai piedi",
+      tags: ["relax", "breve"],
       description: "Pressioni rilassanti su piedi e polpacci, per una piacevole sensazione di leggerezza.",
       options: [
         { minutes: 30, price: 32 },
@@ -99,6 +113,7 @@ window.STUDIO = {
     },
     {
       name: "Massaggio di coppia",
+      tags: ["coppia", "relax"],
       description: "Lo stesso massaggio rilassante, da vivere insieme nella stessa stanza. Prezzo per due persone.",
       options: [
         { minutes: 60, price: 115 },

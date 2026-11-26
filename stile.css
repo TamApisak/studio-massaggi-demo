@@ -105,7 +105,7 @@ main > section + section { border-top: 1px solid var(--line); }
 /* ---- 1. Welcome ------------------------------------------------------- */
 .hero { display: grid; gap: 2rem; align-items: center; }
 .eyebrow { color: var(--sage-deep); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem; }
-.lead { font-size: 1.15rem; color: var(--ink-soft); margin: 1rem 0 1.75rem; max-width: 30rem; }
+.lead { font-size: 1.15rem; color: var(--ink-soft); margin: 1rem 0 1.25rem; max-width: 30rem; }
 
 .photo { border-radius: 18px; overflow: hidden; background: var(--sage-tint); }
 .photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -135,6 +135,38 @@ main > section + section { border-top: 1px solid var(--line); }
 .options .minutes { color: var(--ink); }
 .options .dots { flex: 1; border-bottom: 1px dotted var(--sage); transform: translateY(-4px); }
 .options .price { font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+.options li { align-items: center; }
+.options .dots { transform: translateY(4px); }
+.book {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 0.9rem;
+  border: 1.5px solid var(--sage-deep); border-radius: 999px;
+  color: var(--sage-deep); font-weight: 600; font-size: 0.9rem; text-decoration: none;
+}
+.book:hover { background: var(--sage-tint); }
+
+/* "Cosa cerchi oggi?" filter */
+.needs { margin-bottom: 1.5rem; }
+.needs p { font-weight: 600; margin-bottom: 0.6rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  min-height: 44px; padding: 0 1rem; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--line); background: #FFFDF7; color: var(--ink);
+  font: 500 0.95rem/1 var(--sans);
+}
+.chip:hover { border-color: var(--sage); }
+.chip[aria-pressed="true"] { background: var(--sage-deep); border-color: var(--sage-deep); color: #fff; }
+.treatment[hidden] { display: none; }
+
+/* Open now / closed now */
+.status {
+  display: inline-flex; align-items: center; gap: 0.5rem; margin: 0 0 1.25rem;
+  padding: 0.35rem 0.85rem; border-radius: 999px;
+  background: var(--ivory-deep); color: var(--ink-soft); font-size: 0.92rem; font-weight: 600;
+}
+.status[hidden] { display: none; }
+.status::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: #A9A493; }
+.status.is-open { background: var(--sage-tint); color: var(--sage-deep); }
+.status.is-open::before { background: #4E8A4A; }
 
 /* ---- 3. About --------------------------------------------------------- */
 .about { display: grid; gap: 2rem; align-items: center; }

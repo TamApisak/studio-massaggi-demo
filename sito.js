@@ -30,6 +30,14 @@
     }).format(n);
   };
 
+  /* ---- phone numbers ---------------------------------------------------- */
+  var phoneOk = isReady(S.phone) && digits(S.phone).length >= 8;
+  var waNumber = isReady(S.whatsapp) ? S.whatsapp : S.phone;
+  var waOk = isReady(waNumber) && digits(waNumber).length >= 8;
+  function waLink(message) {
+    return "https://wa.me/" + digits(waNumber) + "?text=" + encodeURIComponent(message || "");
+  }
+
   /* ---- simple text ------------------------------------------------------ */
   each("[data-text]", function (el) {
     el.innerHTML = fill(get(el.getAttribute("data-text")));
@@ -57,11 +65,43 @@
     var rows = (t.options || []).map(function (o) {
       var minutes = typeof o.minutes === "number" ? o.minutes + " min" : todo("durata");
       var price = typeof o.price === "number" ? euro(o.price) : todo("prezzo");
-      return '<li><span class="minutes">' + minutes + '</span><span class="dots" aria-hidden="true"></span><span class="price">' + price + "</span></li>";
+      // "Prenota" opens WhatsApp with this massage and duration already written.
+      var book = "";
+      if (waOk && isReady(t.name) && typeof o.minutes === "number") {
+        var msg = "Ciao, vorrei prenotare: " + t.name + " (" + o.minutes + " min). Quali orari sono disponibili?";
+        book = '<a class="book" target="_blank" rel="noopener" href="' + esc(waLink(msg)) + '" aria-label="' +
+          esc("Prenota " + t.name + ", " + o.minutes + " minuti, su WhatsApp") + '">Prenota</a>';
+      }
+      return '<li><span class="minutes">' + minutes + '</span><span class="dots" aria-hidden="true"></span><span class="price">' + price + "</span>" + book + "</li>";
     }).join("");
-    return '<article class="treatment"><h3>' + fill(t.name, "nome del massaggio") + "</h3><p>" +
+    return '<article class="treatment" data-tags="' + esc((t.tags || []).join(" ")) + '"><h3>' + fill(t.name, "nome del massaggio") + "</h3><p>" +
       fill(t.description, "descrizione") + '</p><ul class="options">' + rows + "</ul></article>";
   }).join("");
+
+  /* ---- "Cosa cerchi oggi?" filter ---------------------------------------- */
+  (function () {
+    var used = {};
+    (S.treatments || []).forEach(function (t) { (t.tags || []).forEach(function (id) { used[id] = true; }); });
+    var needs = (S.needs || []).filter(function (n) { return used[n.id]; });
+    if (!needs.length) return;
+    var box = document.getElementById("needs");
+    var chips = box.querySelector(".chips");
+    chips.innerHTML = '<button type="button" class="chip" data-need="" aria-pressed="true">Tutti</button>' +
+      needs.map(function (n) {
+        return '<button type="button" class="chip" data-need="' + esc(n.id) + '" aria-pressed="false">' + fill(n.label) + "</button>";
+      }).join("");
+    box.hidden = false;
+    chips.addEventListener("click", function (e) {
+      var chip = e.target.closest(".chip");
+      if (!chip) return;
+      var need = chip.getAttribute("data-need");
+      each("#needs .chip", function (c) { c.setAttribute("aria-pressed", c === chip ? "true" : "false"); });
+      each("#treatments .treatment", function (card) {
+        var tags = (card.getAttribute("data-tags") || "").split(" ");
+        card.hidden = !!need && tags.indexOf(need) === -1;
+      });
+    });
+  })();
 
   /* ---- about ------------------------------------------------------------ */
   document.getElementById("about-text").innerHTML = (S.about || [""]).map(function (p) {
@@ -80,12 +120,52 @@
       "</th><td" + (closed ? ' class="closed"' : "") + ">" + fill(h.time, "orario") + "</td></tr>";
   }).join("");
 
+  /* ---- open now / closed now -------------------------------------------- */
+  (function () {
+    // "10:00–13:00 · 15:00–19:00" -> [[600, 780], [900, 1140]]; "Chiuso" -> []; unreadable -> null
+    function slots(text) {
+      text = String(text || "").trim();
+      if (/^chiuso$/i.test(text)) return [];
+      var re = /(\d{1,2})[:.](\d{2})\s*[–—-]\s*(\d{1,2})[:.](\d{2})/g, m, out = [];
+      while ((m = re.exec(text))) out.push([+m[1] * 60 + +m[2], +m[3] * 60 + +m[4]]);
+      return out.length ? out : null;
+    }
+    var week = (S.hours || []).map(function (h) { return slots(h.time); });
+    if (week.length !== 7 || week.some(function (d) { return d === null; })) return;
+
+    function clock(min) { return Math.floor(min / 60) + ":" + ("0" + (min % 60)).slice(-2); }
+    function status() {
+      var p = {};
+      new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Rome", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" })
+        .formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+      var day = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].indexOf(p.weekday);
+      var now = +p.hour * 60 + +p.minute;
+      var open = week[day].filter(function (s) { return now >= s[0] && now < s[1]; })[0];
+      if (open) return { open: true, text: "Aperto ora · chiude alle " + clock(open[1]) };
+      for (var i = 0; i <= 7; i++) {
+        var d = (day + i) % 7;
+        var next = week[d].filter(function (s) { return i > 0 || s[0] > now; })[0];
+        if (next) {
+          var when = i === 0 ? "oggi" : i === 1 ? "domani" : String(S.hours[d].day).toLowerCase();
+          return { open: false, text: "Chiuso ora · apre " + when + " alle " + clock(next[0]) };
+        }
+      }
+      return { open: false, text: "Chiuso" };
+    }
+    function show() {
+      var s = status();
+      each("[data-status]", function (el) {
+        el.textContent = s.text;
+        el.classList.toggle("is-open", s.open);
+        el.hidden = false;
+      });
+    }
+    show();
+    setInterval(show, 60000);
+  })();
+
   /* ---- phone, WhatsApp, directions -------------------------------------- */
   function markTodo(el, why) { el.classList.add("is-todo"); el.removeAttribute("target"); el.title = why; }
-
-  var phoneOk = isReady(S.phone) && digits(S.phone).length >= 8;
-  var waNumber = isReady(S.whatsapp) ? S.whatsapp : S.phone;
-  var waOk = isReady(waNumber) && digits(waNumber).length >= 8;
 
   each(".js-phone", function (el) {
     if (phoneOk) { el.href = "tel:+" + digits(S.phone); el.textContent = S.phone; }
@@ -96,7 +176,7 @@
     else markTodo(el, "Numero di telefono da inserire in dati.js");
   });
   each(".js-whatsapp", function (el) {
-    if (waOk) el.href = "https://wa.me/" + digits(waNumber) + "?text=" + encodeURIComponent(S.whatsappMessage || "");
+    if (waOk) el.href = waLink(S.whatsappMessage);
     else markTodo(el, "Numero WhatsApp da inserire in dati.js");
   });
   each(".js-maps", function (el) {
